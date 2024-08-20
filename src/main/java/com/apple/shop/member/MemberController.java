@@ -54,17 +54,9 @@ public class MemberController {
 
     @GetMapping("/user/{id}")
     @ResponseBody
-    public Member getUser(@PathVariable Long id) {
+    public MemberDto getUser(@PathVariable Long id) {
         var a = memberRepository.findById(id);
         var result = a.get();
-        var data = new Data();
-        data.username = result.getUsername();
-        data.displayName = result.getDisplayName();
-        return result;
+        return new MemberDto(result.getUsername(), result.getDisplayName());
     }
-}
-
-class Data {
-    public String username;
-    public String displayName;
 }

@@ -1,6 +1,8 @@
 package com.apple.shop.Item;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -76,6 +78,14 @@ public class ItemController {
     ResponseEntity<String> deleteItem(@RequestParam Long id) {
         itemRepository.deleteById(id);
         return ResponseEntity.status(200).body("삭제완료");
+    }
+
+    @GetMapping("/list/page/{page}")
+    String GetListPage(Model model, @PathVariable Integer page) {
+
+        Page<Item> result = itemRepository.findPageBy(PageRequest.of(page - 1, 5));
+        model.addAttribute("items", result);
+        return "list.html";
     }
 
 }
